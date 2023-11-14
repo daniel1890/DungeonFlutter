@@ -1,4 +1,4 @@
-﻿using DungeonFlutterAPI.Models;
+﻿using DungeonFlutterAPI.Models.Domain;
 using Microsoft.EntityFrameworkCore;
 
 namespace DungeonFlutterAPI.Data
@@ -9,7 +9,6 @@ namespace DungeonFlutterAPI.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            // Configure the SQLite database connection string
             optionsBuilder.UseSqlite("Data Source=dungeon_flutter.db");
         }
     }

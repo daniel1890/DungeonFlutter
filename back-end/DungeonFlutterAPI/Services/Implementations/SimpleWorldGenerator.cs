@@ -1,5 +1,5 @@
 ﻿using System.Security.Cryptography;
-using DungeonFlutterAPI.Models;
+using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Services.Interfaces;
 
 namespace DungeonFlutterAPI.Services.Implementations

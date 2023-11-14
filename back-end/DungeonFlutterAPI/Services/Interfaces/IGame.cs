@@ -1,4 +1,4 @@
-﻿using DungeonFlutterAPI.Models;
+﻿using DungeonFlutterAPI.Models.Domain;
 
 namespace DungeonFlutterAPI.Services.Interfaces
 {
