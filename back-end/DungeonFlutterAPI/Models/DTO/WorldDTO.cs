@@ -2,6 +2,6 @@
 {
     public class WorldDTO
     {
-        public int[,]? Tiles { get; set; }
+        public List<List<int>>? board { get; set; }
     }
 }

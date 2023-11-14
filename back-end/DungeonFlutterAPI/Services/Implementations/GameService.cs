@@ -18,11 +18,11 @@ namespace DungeonFlutterAPI.Services.Implementations
             _dbContext = dbContext;
         }
 
-        public World StartGame()
+        public World StartGame(int rows, int columns)
         {
             _game.SetWorldGenerator(_worldGenerator);
             
-            return _game.StartGame();
+            return _game.StartGame(rows, columns);
         }
 
         public void MoveCharacter(string direction)

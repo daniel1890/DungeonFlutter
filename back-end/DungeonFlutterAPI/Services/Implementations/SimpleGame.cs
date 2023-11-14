@@ -21,14 +21,16 @@ namespace DungeonFlutterAPI.Services.Implementations
             world = null;
         }
 
-        public World StartGame()
+        public World StartGame(int rows, int columns)
         {
             if (worldGenerator == null)
             {
                 throw new InvalidOperationException("WorldGenerator not set");
             }
 
-            world = worldGenerator.GenerateWorld();
+
+            World world = worldGenerator.GenerateWorld(rows, columns);
+            List<List<int>> board = world.board;
             Console.WriteLine($"Game started with world: {world}");
 
             return world;

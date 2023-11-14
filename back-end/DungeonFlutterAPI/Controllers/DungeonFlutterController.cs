@@ -10,22 +10,21 @@ namespace DungeonFlutterAPI.Controllers
     [Route("api/game")]
     public class DungeonFlutterController : ControllerBase
     {
-        private readonly IGame game;
-        private readonly IWorldGenerator worldGenerator;
         private readonly IGameService gameService;
 
-        public DungeonFlutterController(IGame game, IWorldGenerator worldGenerator, IGameService gameService)
+        public DungeonFlutterController(IGameService gameService)
         {
-            this.game = game;
-            this.worldGenerator = worldGenerator;
             this.gameService = gameService;
         }
 
-        [HttpPost("start")]
-        public IActionResult StartGame()
+        [HttpPost("start/{rows}/{columns}")]
+        public IActionResult StartGame(int rows, int columns)
         {
-            gameService.StartGame();
-            return Ok("Game started successfully");
+            World world = gameService.StartGame(rows, columns);
+            var worldDTO = new WorldDTO();
+            worldDTO.board = world.board;
+
+            return Ok(worldDTO);
         }
 
         [HttpGet("world")]
@@ -33,7 +32,7 @@ namespace DungeonFlutterAPI.Controllers
         {
             World world = gameService.GetWorld();
             var worldDTO = new WorldDTO();
-            worldDTO.Tiles = world.Tiles;
+            worldDTO.board = world.board;
 
             return Ok(worldDTO);
         }

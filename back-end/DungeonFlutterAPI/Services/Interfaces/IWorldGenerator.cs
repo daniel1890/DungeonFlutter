@@ -4,6 +4,6 @@ namespace DungeonFlutterAPI.Services.Interfaces
 {
     public interface IWorldGenerator
     {
-        World GenerateWorld();
+        World GenerateWorld(int rows, int columns);
     }
 }
