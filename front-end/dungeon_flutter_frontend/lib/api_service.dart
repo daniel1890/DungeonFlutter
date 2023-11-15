@@ -19,4 +19,18 @@ class ApiService {
           'Failed to start the game. Status code: ${response.statusCode}');
     }
   }
+
+  Future<Map<String, dynamic>> saveHighScore(String player, int score) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/game/savehighscore/$player?$score'),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(
+          'Failed to save highscore. Status code: ${response.statusCode}');
+    }
+  }
 }
