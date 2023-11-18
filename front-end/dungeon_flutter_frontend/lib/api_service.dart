@@ -53,8 +53,7 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> login(
-      String playerName, String password) async {
+  Future<Map<String, dynamic>> login(String playerName, String password) async {
     final response = await http.post(
       Uri.parse('$baseUrl/api/account/login'),
       body: jsonEncode({
@@ -65,10 +64,10 @@ class ApiService {
     );
 
     if (response.statusCode == 200) {
+      print(response.body);
       return jsonDecode(response.body);
     } else {
-      throw Exception(
-          'Failed to login. Status code: ${response.statusCode}');
+      throw Exception('Failed to login. Status code: ${response.statusCode}');
     }
   }
 }

@@ -21,6 +21,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
   int tries = 3;
   bool gameStarted = false;
   Difficulty difficulty = Difficulty.normal; // Default difficulty
+  String loggedInPlayer = '';
 
   @override
   Widget build(BuildContext context) {
@@ -47,14 +48,6 @@ class _MyGameScreenState extends State<MyGameScreen> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            // Add your logic for quitting the game
-            _resetGame();
-          },
-          child: const Text('Quit Game'),
-        ),
-        const SizedBox(height: 16),
-        ElevatedButton(
-          onPressed: () {
             RegisterDialog.showRegisterAccountDialog(context, apiService);
           },
           child: const Text('Register Account'),
@@ -62,10 +55,20 @@ class _MyGameScreenState extends State<MyGameScreen> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            LoginDialog.showLoginDialog(context, apiService);
+            LoginDialog.showLoginDialog(context, apiService, onLoginSuccess);
           },
           child: const Text('Login'),
         ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            _resetGame();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: const Text('Quit Game'),
+        )
       ],
     );
   }
@@ -74,6 +77,11 @@ class _MyGameScreenState extends State<MyGameScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
+        if (loggedInPlayer.isNotEmpty)
+          Align(
+            alignment: Alignment.topRight,
+            child: Text('Logged in as $loggedInPlayer'),
+          ),
         Text('Tries left: $tries'),
         ElevatedButton(
           onPressed: () {
@@ -102,6 +110,13 @@ class _MyGameScreenState extends State<MyGameScreen> {
         ],
       ],
     );
+  }
+
+  void onLoginSuccess(String playerName) {
+    setState(() {
+      loggedInPlayer = playerName;
+      //print(loggedInPlayer);
+    });
   }
 
   Future<void> startGame() async {

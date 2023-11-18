@@ -52,22 +52,15 @@ namespace DungeonFlutterAPI.Controllers
         [HttpPost("login")]
         public IActionResult Login([FromBody] PlayerLoginDTO loginDTO)
         {
-            try
-            {
-                var player = _playerService.LoginPlayer(loginDTO);
+            var player = _playerService.LoginPlayer(loginDTO);
 
-                if (player == null)
-                {
-                    return BadRequest("Invalid player credentials");
-                }
-
-                return Ok("Login successful");
-            }
-            catch (Exception ex)
+            if (player != null)
             {
-                Console.Error.WriteLine(ex.Message);
-                return StatusCode(500, "An error occurred while processing your request.");
+                return Ok(new { playerName = player.PlayerName });
             }
+
+            // Return an error response for failed login
+            return BadRequest("Invalid credentials");
         }
     }
 }

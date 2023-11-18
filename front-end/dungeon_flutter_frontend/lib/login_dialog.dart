@@ -5,8 +5,9 @@ class LoginDialog {
   static Future<void> showLoginDialog(
     BuildContext context,
     ApiService apiService,
+    Function(String) onLoginSuccess,
   ) async {
-    String playerName = '';
+    String playerName = ''; // Declare the variable here
     String password = '';
 
     await showDialog(
@@ -45,7 +46,8 @@ class LoginDialog {
               onPressed: () async {
                 if (playerName.isNotEmpty && password.isNotEmpty) {
                   Navigator.of(context).pop();
-                  await _login(apiService, playerName, password);
+                  await _login(
+                      apiService, playerName, password, onLoginSuccess);
                 } else {
                   // Handle invalid input
                 }
@@ -59,11 +61,17 @@ class LoginDialog {
   }
 }
 
-Future<void> _login(
-    ApiService apiService, String playerName, String password) async {
+Future<void> _login(ApiService apiService, String playerName, String password,
+    Function(String) onLoginSuccess) async {
   try {
     final response = await apiService.login(playerName, password);
-    print(response); // Handle the response accordingly
+    final playerNameFromResponse = response['playerName'].toString();
+
+    if (playerNameFromResponse != null) {
+      onLoginSuccess(playerNameFromResponse);
+    } else {
+      // Handle login failure
+    }
   } catch (e) {
     print('Error logging in: $e');
   }
