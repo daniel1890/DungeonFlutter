@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'memory_button.dart';
+import 'register_dialog.dart';
 
 enum Difficulty { normal, hard }
 
@@ -27,46 +28,71 @@ class _MyGameScreenState extends State<MyGameScreen> {
         title: const Text('Concentration Game'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text('Tries left: $tries'),
-            ElevatedButton(
-              onPressed: gameStarted
-                  ? null
-                  : () async {
-                      await startGame();
-                    },
-              child: const Text('Start Game'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  difficulty = difficulty == Difficulty.normal
-                      ? Difficulty.hard
-                      : Difficulty.normal;
-                });
-              },
-              child: const Text('Switch Difficulty'),
-            ),
-            if (board.isNotEmpty) ...[
-              // Display the game grid
-              for (int i = 0; i < board.length; i++)
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    for (int j = 0; j < board[i].length; j++)
-                      MemoryButton(
-                        value: board[i][j],
-                        revealed: revealed[i][j],
-                        onPressed: () => _onCardPressed(i, j),
-                      ),
-                  ],
-                ),
-            ],
-          ],
-        ),
+        child: gameStarted ? _buildGameScreen() : _buildMainMenu(),
       ),
+    );
+  }
+
+  Widget _buildMainMenu() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        ElevatedButton(
+          onPressed: () async {
+            await startGame();
+          },
+          child: const Text('Start Game'),
+        ),
+        const SizedBox(height: 16), // Add vertical padding between buttons
+        ElevatedButton(
+          onPressed: () {
+            // Add your logic for quitting the game
+            _resetGame();
+          },
+          child: const Text('Quit Game'),
+        ),
+        const SizedBox(height: 16), // Add vertical padding between buttons
+        ElevatedButton(
+          onPressed: () {
+            RegisterDialog.showRegisterAccountDialog(context, apiService);
+          },
+          child: const Text('Register Account'),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildGameScreen() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Text('Tries left: $tries'),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              difficulty = difficulty == Difficulty.normal
+                  ? Difficulty.hard
+                  : Difficulty.normal;
+            });
+          },
+          child: const Text('Switch Difficulty'),
+        ),
+        if (board.isNotEmpty) ...[
+          // Display the game grid
+          for (int i = 0; i < board.length; i++)
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                for (int j = 0; j < board[i].length; j++)
+                  MemoryButton(
+                    value: board[i][j],
+                    revealed: revealed[i][j],
+                    onPressed: () => _onCardPressed(i, j),
+                  ),
+              ],
+            ),
+        ],
+      ],
     );
   }
 
@@ -122,7 +148,6 @@ class _MyGameScreenState extends State<MyGameScreen> {
         selected = [];
       });
     } else {
-      // No match, hide the cards based on difficulty
       setState(() {
         if (difficulty == Difficulty.normal) {
           // For normal difficulty, only hide the selected cards
@@ -174,7 +199,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
     }
 
     final response =
-        await apiService.saveHighScore('tester', boardScoreCasted + tries);
+        await apiService.saveHighScore(1, boardScoreCasted + tries);
     print(response['highscore']);
   }
 

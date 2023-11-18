@@ -6,9 +6,8 @@ namespace DungeonFlutterAPI.Services.Interfaces
     public interface IGameService
     {
         World StartGame(int rows, int columns);
-        void MoveCharacter(string direction);
-        void SaveHighScore(string playerName, int score);
-        HighScoreDTO? GetHighScore(string playerName);
+        void SaveHighScore(int playerId, int highscore);
+        HighScoreDTO? GetHighScore(int playerId);
 
         World GetWorld();
     }

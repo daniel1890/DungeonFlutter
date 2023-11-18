@@ -37,25 +37,25 @@ namespace DungeonFlutterAPI.Controllers
             return Ok(worldDTO);
         }
 
-        [HttpGet("highscore/{playerName}")]
-        public IActionResult GetHighScore(string playerName)
+        [HttpGet("highscore/{playerId}")]
+        public IActionResult GetHighScore(int playerId)
         {
-            var highScore = gameService.GetHighScore(playerName);
+            var highScore = gameService.GetHighScore(playerId);
 
             if (highScore != null)
             {
                 return Ok(new { player = highScore.Player, highscore = highScore.HighScore });
             }
 
-            return NotFound($"High score not found for player: {playerName}");
+            return NotFound($"High score not found for player with ID: {playerId}");
         }
 
-        [HttpPost("savehighscore/{playerName}")]
-        public IActionResult SaveHighScore(string playerName, int highscore)
+        [HttpPost("savehighscore/{playerId}")]
+        public IActionResult SaveHighScore(int playerId, int highscore)
         {
-            gameService.SaveHighScore(playerName, highscore);
+            gameService.SaveHighScore(playerId, highscore);
 
-            return Ok(new { player = playerName, highscore });
+            return Ok(new { player = playerId, highscore });
         }
 
     }

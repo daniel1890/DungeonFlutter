@@ -25,21 +25,23 @@ namespace DungeonFlutterAPI.Services.Implementations
             return _game.StartGame(rows, columns);
         }
 
-        public void MoveCharacter(string direction)
-        {
-            // Implement character movement logic
-        }
-
         public World GetWorld()
         {
             return _game.GetWorld();
         }
 
-        public void SaveHighScore(string playerName, int highscore)
+        public void SaveHighScore(int playerId, int highscore)
         {
+            var player = _dbContext.Players.FirstOrDefault(p => p.Id == playerId);
+            if (player == null)
+            {
+                throw new ArgumentException();
+            }
+
             var highScore = new HighScore
             {
-                PlayerName = playerName,
+                PlayerId = playerId,
+                Player = player,
                 Score = highscore
             };
 
@@ -47,20 +49,25 @@ namespace DungeonFlutterAPI.Services.Implementations
             _dbContext.SaveChanges();
         }
 
-        public HighScoreDTO? GetHighScore(string playerName)
+        public HighScoreDTO? GetHighScore(int playerId)
         {
             var highScore = _dbContext.HighScores
-                .Where(h => h.PlayerName == playerName)
+                .Where(h => h.PlayerId == playerId)
                 .OrderByDescending(h => h.Score)
                 .FirstOrDefault();
 
             if (highScore != null)
             {
-                return new HighScoreDTO
+                var player = _dbContext.Players.FirstOrDefault(p => p.Id == playerId);
+
+                if (player != null)
                 {
-                    Player = playerName,
-                    HighScore = highScore.Score
-                };
+                    return new HighScoreDTO
+                    {
+                        Player = player,
+                        HighScore = highScore.Score
+                    };
+                }
             }
 
             // No highscore found

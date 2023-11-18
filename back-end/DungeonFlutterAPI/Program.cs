@@ -13,8 +13,10 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyDbContext>();
 builder.Services.AddScoped<IGameService, GameService>();
-builder.Services.AddScoped<IWorldGenerator, SimpleWorldGenerator>();
+builder.Services.AddScoped<IWorldGenerator, MemoryWorldGenerator>();
 builder.Services.AddScoped<IGame, SimpleGame>();
+builder.Services.AddScoped<IPlayerService, PlayerService>();
+
 
 
 var app = builder.Build();

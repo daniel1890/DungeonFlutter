@@ -10,11 +10,6 @@ namespace DungeonFlutterAPI.Services.Implementations
 
         public SimpleGame() { }
 
-        public void MoveCharacter(string direction)
-        {
-            throw new NotImplementedException();
-        }
-
         public void SetWorldGenerator(IWorldGenerator worldGenerator)
         {
             this.worldGenerator = worldGenerator;

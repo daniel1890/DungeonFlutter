@@ -20,9 +20,9 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> saveHighScore(String player, int score) async {
+  Future<Map<String, dynamic>> saveHighScore(int playerId, int score) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/game/savehighscore/$player?$score'),
+      Uri.parse('$baseUrl/api/game/savehighscore/$playerId?$score'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -31,6 +31,25 @@ class ApiService {
     } else {
       throw Exception(
           'Failed to save highscore. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<Map<String, dynamic>> registerAccount(
+      String playerName, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/account/register'),
+      body: jsonEncode({
+        "playerName": playerName,
+        "password": password,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(
+          'Failed to register new account. Status code: ${response.statusCode}');
     }
   }
 }

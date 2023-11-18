@@ -7,7 +7,5 @@ namespace DungeonFlutterAPI.Services.Interfaces
         World GetWorld();
         void SetWorldGenerator(IWorldGenerator worldGenerator);
         World StartGame(int rows, int columns);
-        void MoveCharacter(string direction);
-
     }
 }

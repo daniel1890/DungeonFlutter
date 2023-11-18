@@ -1,8 +1,11 @@
-﻿namespace DungeonFlutterAPI.Models.DTO
+﻿using DungeonFlutterAPI.Models.Domain;
+
+namespace DungeonFlutterAPI.Models.DTO
 {
     public class HighScoreDTO
     {
-        public string Player { get; set; }
+        public int PlayerId { get; set; }
+        public Player Player { get; set; }
         public int HighScore { get; set; }
     }
 }
