@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'api_service.dart';
 import 'memory_button.dart';
 import 'register_dialog.dart';
+import 'login_dialog.dart';
 
 enum Difficulty { normal, hard }
 
@@ -43,7 +44,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
           },
           child: const Text('Start Game'),
         ),
-        const SizedBox(height: 16), // Add vertical padding between buttons
+        const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             // Add your logic for quitting the game
@@ -51,12 +52,19 @@ class _MyGameScreenState extends State<MyGameScreen> {
           },
           child: const Text('Quit Game'),
         ),
-        const SizedBox(height: 16), // Add vertical padding between buttons
+        const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
             RegisterDialog.showRegisterAccountDialog(context, apiService);
           },
           child: const Text('Register Account'),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
+            LoginDialog.showLoginDialog(context, apiService);
+          },
+          child: const Text('Login'),
         ),
       ],
     );

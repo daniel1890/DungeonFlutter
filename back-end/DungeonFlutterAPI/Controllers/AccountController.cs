@@ -35,12 +35,33 @@ namespace DungeonFlutterAPI.Controllers
                 {
                     PlayerName = registrationDTO.PlayerName,
 
-                    //Password = registrationDTO.Password
+                    Password = registrationDTO.Password
                 };
 
                 _playerService.RegisterPlayer(player);
 
                 return Ok("Player registered successfully.");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
+        }
+
+        [HttpPost("login")]
+        public IActionResult Login([FromBody] PlayerLoginDTO loginDTO)
+        {
+            try
+            {
+                var player = _playerService.LoginPlayer(loginDTO);
+
+                if (player == null)
+                {
+                    return BadRequest("Invalid player credentials");
+                }
+
+                return Ok("Login successful");
             }
             catch (Exception ex)
             {

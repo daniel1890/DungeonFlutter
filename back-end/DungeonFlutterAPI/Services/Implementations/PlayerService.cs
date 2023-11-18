@@ -1,5 +1,6 @@
 ﻿using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
+using DungeonFlutterAPI.Models.DTO;
 using DungeonFlutterAPI.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,6 +24,15 @@ namespace DungeonFlutterAPI.Services.Implementations
         {
             _dbContext.Players.Add(player);
             _dbContext.SaveChanges();
+        }
+
+        public Player LoginPlayer(PlayerLoginDTO loginDTO)
+        {
+
+            var player = _dbContext.Players.FirstOrDefault(p =>
+                 p.PlayerName == loginDTO.PlayerName && p.Password == loginDTO.Password);
+
+            return player;
         }
     }
 }

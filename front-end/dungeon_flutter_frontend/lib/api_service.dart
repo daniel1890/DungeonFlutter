@@ -52,4 +52,23 @@ class ApiService {
           'Failed to register new account. Status code: ${response.statusCode}');
     }
   }
+
+  Future<Map<String, dynamic>> login(
+      String playerName, String password) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/account/login'),
+      body: jsonEncode({
+        "playerName": playerName,
+        "password": password,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(
+          'Failed to login. Status code: ${response.statusCode}');
+    }
+  }
 }

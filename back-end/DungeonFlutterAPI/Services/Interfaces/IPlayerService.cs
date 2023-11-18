@@ -1,4 +1,5 @@
 ﻿using DungeonFlutterAPI.Models.Domain;
+using DungeonFlutterAPI.Models.DTO;
 
 namespace DungeonFlutterAPI.Services.Interfaces
 {
@@ -6,5 +7,7 @@ namespace DungeonFlutterAPI.Services.Interfaces
     {
         bool IsPlayerNameTaken(string playerName);
         void RegisterPlayer(Player player);
+        Player LoginPlayer(PlayerLoginDTO loginDTO);
+
     }
 }
