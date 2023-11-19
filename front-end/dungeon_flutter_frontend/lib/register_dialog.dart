@@ -5,7 +5,7 @@ class RegisterDialog {
   static Future<void> showRegisterAccountDialog(
     BuildContext context,
     ApiService apiService,
-    Function(String) onRegisterSuccess,
+    Function(String, int) onRegisterSuccess,
   ) async {
     String playerName = '';
     String password = '';
@@ -70,14 +70,15 @@ class RegisterDialog {
     ApiService apiService,
     String playerName,
     String password,
-    Function(String) onRegisterSuccess,
+    Function(String, int) onRegisterSuccess,
   ) async {
     try {
       final response = await apiService.registerAccount(playerName, password);
       final playerNameFromResponse = response['playerName'].toString();
+      final playerIdFromResponse = response['id'].toInt();
 
       if (playerNameFromResponse != null) {
-        onRegisterSuccess(playerNameFromResponse);
+        onRegisterSuccess(playerNameFromResponse, playerIdFromResponse);
       } else {
         print('Failed handling username.');
       }

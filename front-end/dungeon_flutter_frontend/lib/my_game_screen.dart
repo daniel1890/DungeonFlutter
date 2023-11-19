@@ -22,6 +22,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
   bool gameStarted = false;
   Difficulty difficulty = Difficulty.normal; // Default difficulty
   String loggedInPlayer = '';
+  late int loggedInPlayerId;
 
   @override
   Widget build(BuildContext context) {
@@ -118,17 +119,22 @@ class _MyGameScreenState extends State<MyGameScreen> {
   void onLoginSuccess(String playerName) {
     setState(() {
       loggedInPlayer = playerName;
+      //loggedInPlayerId = playerName;
     });
   }
 
-  void onRegisterSuccess(String playerName) {
+  void onRegisterSuccess(String playerName, int playerId) {
+    setState(() {
+      loggedInPlayer = playerName;
+      loggedInPlayerId = playerId;
+    });
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Registration Successful'),
           content: Text(
-              'You have successfully registered with the username: $playerName'),
+              'You have successfully registered with the username: $playerName. And have received id: $playerId',),
           actions: [
             TextButton(
               onPressed: () {
@@ -189,7 +195,6 @@ class _MyGameScreenState extends State<MyGameScreen> {
 
   void _checkForMatch() {
     if (selected[0] == selected[1]) {
-      // Match found
       setState(() {
         selected = [];
       });
@@ -245,7 +250,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
     }
 
     final response =
-        await apiService.saveHighScore(1, boardScoreCasted + tries);
+        await apiService.saveHighScore(loggedInPlayerId, boardScoreCasted + tries);
     print(response['highscore']);
   }
 

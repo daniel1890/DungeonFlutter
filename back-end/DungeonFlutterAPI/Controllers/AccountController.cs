@@ -40,7 +40,7 @@ namespace DungeonFlutterAPI.Controllers
 
                 _playerService.RegisterPlayer(player);
 
-                return Ok(new { playerName = player.PlayerName });
+                return Ok(new { playerName = player.PlayerName, Id = player.Id });
             }
             catch (Exception ex)
             {
@@ -56,7 +56,7 @@ namespace DungeonFlutterAPI.Controllers
 
             if (player != null)
             {
-                return Ok(new { playerName = player.PlayerName });
+                return Ok(new { playerName = player.PlayerName, Id = player.Id });
             }
 
             // Return an error response for failed login
