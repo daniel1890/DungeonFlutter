@@ -48,7 +48,11 @@ class _MyGameScreenState extends State<MyGameScreen> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
-            RegisterDialog.showRegisterAccountDialog(context, apiService);
+            RegisterDialog.showRegisterAccountDialog(
+              context,
+              apiService,
+              onRegisterSuccess,
+            );
           },
           child: const Text('Register Account'),
         ),
@@ -94,7 +98,6 @@ class _MyGameScreenState extends State<MyGameScreen> {
           child: const Text('Switch Difficulty'),
         ),
         if (board.isNotEmpty) ...[
-          // Display the game grid
           for (int i = 0; i < board.length; i++)
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -115,8 +118,28 @@ class _MyGameScreenState extends State<MyGameScreen> {
   void onLoginSuccess(String playerName) {
     setState(() {
       loggedInPlayer = playerName;
-      //print(loggedInPlayer);
     });
+  }
+
+  void onRegisterSuccess(String playerName) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Registration Successful'),
+          content: Text(
+              'You have successfully registered with the username: $playerName'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   Future<void> startGame() async {

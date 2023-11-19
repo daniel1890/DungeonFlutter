@@ -5,6 +5,7 @@ class RegisterDialog {
   static Future<void> showRegisterAccountDialog(
     BuildContext context,
     ApiService apiService,
+    Function(String) onRegisterSuccess,
   ) async {
     String playerName = '';
     String password = '';
@@ -45,9 +46,15 @@ class RegisterDialog {
               onPressed: () async {
                 if (playerName.isNotEmpty && password.isNotEmpty) {
                   Navigator.of(context).pop();
-                  await apiService.registerAccount(playerName, password);
+                  await _register(
+                    context,
+                    apiService,
+                    playerName,
+                    password,
+                    onRegisterSuccess,
+                  );
                 } else {
-                  // Handle invalid input
+                  throw Exception('Failed to register.');
                 }
               },
               child: const Text('Register'),
@@ -56,5 +63,26 @@ class RegisterDialog {
         );
       },
     );
+  }
+
+  static Future<void> _register(
+    BuildContext context,
+    ApiService apiService,
+    String playerName,
+    String password,
+    Function(String) onRegisterSuccess,
+  ) async {
+    try {
+      final response = await apiService.registerAccount(playerName, password);
+      final playerNameFromResponse = response['playerName'].toString();
+
+      if (playerNameFromResponse != null) {
+        onRegisterSuccess(playerNameFromResponse);
+      } else {
+        print('Failed handling username.');
+      }
+    } catch (e) {
+      print('Error registering account: $e');
+    }
   }
 }

@@ -7,7 +7,7 @@ class LoginDialog {
     ApiService apiService,
     Function(String) onLoginSuccess,
   ) async {
-    String playerName = ''; // Declare the variable here
+    String playerName = '';
     String password = '';
 
     await showDialog(
@@ -49,7 +49,7 @@ class LoginDialog {
                   await _login(
                       apiService, playerName, password, onLoginSuccess);
                 } else {
-                  // Handle invalid input
+                  throw Exception('Failed to login.');
                 }
               },
               child: const Text('Login'),
@@ -70,7 +70,7 @@ Future<void> _login(ApiService apiService, String playerName, String password,
     if (playerNameFromResponse != null) {
       onLoginSuccess(playerNameFromResponse);
     } else {
-      // Handle login failure
+      print('Failed handling username.');
     }
   } catch (e) {
     print('Error logging in: $e');

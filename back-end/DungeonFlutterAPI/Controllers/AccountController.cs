@@ -40,7 +40,7 @@ namespace DungeonFlutterAPI.Controllers
 
                 _playerService.RegisterPlayer(player);
 
-                return Ok("Player registered successfully.");
+                return Ok(new { playerName = player.PlayerName });
             }
             catch (Exception ex)
             {
