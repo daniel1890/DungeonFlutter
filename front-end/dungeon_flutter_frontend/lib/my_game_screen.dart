@@ -20,7 +20,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
   List<int> selected = [];
   int tries = 3;
   bool gameStarted = false;
-  Difficulty difficulty = Difficulty.normal; // Default difficulty
+  Difficulty difficulty = Difficulty.normal;
   String loggedInPlayer = '';
   late int loggedInPlayerId;
 
@@ -28,7 +28,9 @@ class _MyGameScreenState extends State<MyGameScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Concentration Game'),
+        title: loggedInPlayer.isNotEmpty
+            ? Text('Concentration Game - Logged in as: $loggedInPlayer')
+            : const Text('Concentration Game'),
       ),
       body: Center(
         child: gameStarted ? _buildGameScreen() : _buildMainMenu(),
@@ -82,11 +84,6 @@ class _MyGameScreenState extends State<MyGameScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        if (loggedInPlayer.isNotEmpty)
-          Align(
-            alignment: Alignment.topRight,
-            child: Text('Logged in as $loggedInPlayer'),
-          ),
         Text('Tries left: $tries'),
         ElevatedButton(
           onPressed: () {
@@ -134,7 +131,8 @@ class _MyGameScreenState extends State<MyGameScreen> {
         return AlertDialog(
           title: const Text('Registration Successful'),
           content: Text(
-              'You have successfully registered with the username: $playerName. And have received id: $playerId',),
+            'You have successfully registered with the username: $playerName. And have received id: $playerId',
+          ),
           actions: [
             TextButton(
               onPressed: () {
@@ -249,8 +247,8 @@ class _MyGameScreenState extends State<MyGameScreen> {
           'You win!', 'Congratulations! Your score: $boardScoreCasted.');
     }
 
-    final response =
-        await apiService.saveHighScore(loggedInPlayerId, boardScoreCasted + tries);
+    final response = await apiService.saveHighScore(
+        loggedInPlayerId, boardScoreCasted + tries);
     print(response['highscore']);
   }
 

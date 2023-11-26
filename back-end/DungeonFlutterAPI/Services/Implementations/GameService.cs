@@ -1,4 +1,5 @@
-﻿using DungeonFlutterAPI.Data;
+﻿using DungeonFlutterAPI.DAOs;
+using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
 using DungeonFlutterAPI.Services.Interfaces;
@@ -9,13 +10,13 @@ namespace DungeonFlutterAPI.Services.Implementations
     {
         private readonly IWorldGenerator _worldGenerator;
         private readonly IGame _game;
-        private readonly MyDbContext _dbContext;
+        private readonly HighScoreDAO _highScoreDAO;
 
-        public GameService(IWorldGenerator worldGenerator, IGame game, MyDbContext dbContext)
+        public GameService(IWorldGenerator worldGenerator, IGame game, HighScoreDAO highScoreDAO)
         {
             _worldGenerator = worldGenerator ?? throw new ArgumentNullException(nameof(worldGenerator));
             _game = game ?? throw new ArgumentNullException(nameof(game));
-            _dbContext = dbContext;
+            _highScoreDAO = highScoreDAO ?? throw new ArgumentNullException(nameof(_highScoreDAO));
         }
 
         public World StartGame(int rows, int columns)
@@ -32,46 +33,12 @@ namespace DungeonFlutterAPI.Services.Implementations
 
         public void SaveHighScore(int playerId, int highscore)
         {
-            var player = _dbContext.Players.FirstOrDefault(p => p.Id == playerId);
-            if (player == null)
-            {
-                throw new ArgumentException();
-            }
-
-            var highScore = new HighScore
-            {
-                PlayerId = playerId,
-                Player = player,
-                Score = highscore
-            };
-
-            _dbContext.HighScores.Add(highScore);
-            _dbContext.SaveChanges();
+            _highScoreDAO.SaveHighScore(playerId, highscore);
         }
 
         public HighScoreDTO? GetHighScore(int playerId)
         {
-            var highScore = _dbContext.HighScores
-                .Where(h => h.PlayerId == playerId)
-                .OrderByDescending(h => h.Score)
-                .FirstOrDefault();
-
-            if (highScore != null)
-            {
-                var player = _dbContext.Players.FirstOrDefault(p => p.Id == playerId);
-
-                if (player != null)
-                {
-                    return new HighScoreDTO
-                    {
-                        Player = player,
-                        HighScore = highScore.Score
-                    };
-                }
-            }
-
-            // No highscore found
-            return null;
+            return _highScoreDAO.GetHighScore(playerId);
         }
     }
 }

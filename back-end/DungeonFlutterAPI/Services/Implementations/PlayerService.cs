@@ -1,4 +1,5 @@
-﻿using DungeonFlutterAPI.Data;
+﻿using DungeonFlutterAPI.DAOs;
+using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
 using DungeonFlutterAPI.Services.Interfaces;
@@ -8,31 +9,26 @@ namespace DungeonFlutterAPI.Services.Implementations
 {
     public class PlayerService : IPlayerService
     {
-        private readonly MyDbContext _dbContext;
+        private readonly PlayerDAO _playerDAO;
 
-        public PlayerService(MyDbContext dbContext)
+        public PlayerService(PlayerDAO playerDAO)
         {
-            _dbContext = dbContext;
-        }
-
-        public bool IsPlayerNameTaken(string playerName)
-        {
-            return _dbContext.Players.Any(p => p.PlayerName == playerName);
+            _playerDAO = playerDAO;
         }
 
         public void RegisterPlayer(Player player)
         {
-            _dbContext.Players.Add(player);
-            _dbContext.SaveChanges();
+            _playerDAO.RegisterPlayer(player);
         }
 
-        public Player LoginPlayer(PlayerLoginDTO loginDTO)
+        public Player? LoginPlayer(PlayerLoginDTO loginDTO)
         {
+            return _playerDAO.LoginPlayer(loginDTO);
+        }
 
-            var player = _dbContext.Players.FirstOrDefault(p =>
-                 p.PlayerName == loginDTO.PlayerName && p.Password == loginDTO.Password);
-
-            return player;
+        public bool IsPlayerNameTaken(string playerName)
+        {
+            return _playerDAO.IsPlayerNameTaken(playerName);
         }
     }
 }

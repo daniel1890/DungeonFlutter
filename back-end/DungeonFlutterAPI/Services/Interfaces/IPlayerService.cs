@@ -7,7 +7,7 @@ namespace DungeonFlutterAPI.Services.Interfaces
     {
         bool IsPlayerNameTaken(string playerName);
         void RegisterPlayer(Player player);
-        Player LoginPlayer(PlayerLoginDTO loginDTO);
+        Player? LoginPlayer(PlayerLoginDTO loginDTO);
 
     }
 }
