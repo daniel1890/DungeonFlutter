@@ -69,6 +69,16 @@ class _MyGameScreenState extends State<MyGameScreen> {
         const SizedBox(height: 16),
         ElevatedButton(
           onPressed: () {
+            _logout();
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.red,
+          ),
+          child: const Text('Logout'),
+        ),
+        const SizedBox(height: 16),
+        ElevatedButton(
+          onPressed: () {
             _resetGame();
           },
           style: ElevatedButton.styleFrom(
@@ -144,6 +154,13 @@ class _MyGameScreenState extends State<MyGameScreen> {
         );
       },
     );
+  }
+
+  void _logout() {
+    setState(() {
+      loggedInPlayer = '';
+      loggedInPlayerId = 0;
+    });
   }
 
   Future<void> startGame() async {

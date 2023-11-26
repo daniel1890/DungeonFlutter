@@ -16,15 +16,36 @@ namespace DungeonFlutterAPI.Services.Implementations
 
             List<int> numbers = Enumerable.Range(0, (rows * columns) / 2).ToList();
 
+            // Use Fisher-Yates shuffle for shuffling the numbers list
             Random random = new Random();
-            numbers = numbers.OrderBy(x => random.Next()).ToList();
+            int n = numbers.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                int value = numbers[k];
+                numbers[k] = numbers[n];
+                numbers[n] = value;
+            }
+
+            numbers.AddRange(numbers);
+
+            n = numbers.Count;
+            while (n > 1)
+            {
+                n--;
+                int k = random.Next(n + 1);
+                int value = numbers[k];
+                numbers[k] = numbers[n];
+                numbers[n] = value;
+            }
 
             for (int i = 0; i < rows; i++)
             {
                 List<int> row = new List<int>();
                 for (int j = 0; j < columns; j++)
                 {
-                    row.Add(numbers[i * columns / 2 + j % (columns / 2)]);
+                    row.Add(numbers[i * columns + j]);
                 }
                 board.Add(row);
             }

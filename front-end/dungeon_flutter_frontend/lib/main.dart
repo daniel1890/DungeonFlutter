@@ -18,8 +18,8 @@ class MyApp extends StatelessWidget {
 
 // TODOS: 
 // DONE 1. Add DAO layer to back-end
-// 2. Add logout functionality
-// 3. Add real shuffle functionality to back-end
+// DONE 2. Add logout functionality
+// DONE 3. Add real shuffle functionality to back-end
 // 4. Fix normal difficulty card turning
 // 5. Fix score calculation
 // 6. Add multiple levels adding 1 to n cards on x,y of cards 2d array
