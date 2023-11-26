@@ -5,7 +5,7 @@ class LoginDialog {
   static Future<void> showLoginDialog(
     BuildContext context,
     ApiService apiService,
-    Function(String) onLoginSuccess,
+    Function(String, int) onLoginSuccess,
   ) async {
     String playerName = '';
     String password = '';
@@ -62,13 +62,14 @@ class LoginDialog {
 }
 
 Future<void> _login(ApiService apiService, String playerName, String password,
-    Function(String) onLoginSuccess) async {
+    Function(String, int) onLoginSuccess) async {
   try {
     final response = await apiService.login(playerName, password);
     final playerNameFromResponse = response['playerName'].toString();
+    final playerIdFromResponse = response['id'].toInt();
 
     if (playerNameFromResponse != null) {
-      onLoginSuccess(playerNameFromResponse);
+      onLoginSuccess(playerNameFromResponse, playerIdFromResponse);
     } else {
       print('Failed handling username.');
     }

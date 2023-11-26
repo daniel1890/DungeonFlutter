@@ -10,10 +10,10 @@ class MyGameScreen extends StatefulWidget {
   const MyGameScreen({super.key});
 
   @override
-  _MyGameScreenState createState() => _MyGameScreenState();
+  MyGameScreenState createState() => MyGameScreenState();
 }
 
-class _MyGameScreenState extends State<MyGameScreen> {
+class MyGameScreenState extends State<MyGameScreen> {
   ApiService apiService = ApiService('https://localhost:7258');
   List<List<int>> board = [];
   List<List<bool>> revealed = [];
@@ -105,6 +105,7 @@ class _MyGameScreenState extends State<MyGameScreen> {
           },
           child: const Text('Switch Difficulty'),
         ),
+        Text('Current difficulty: $difficulty'),
         if (board.isNotEmpty) ...[
           for (int i = 0; i < board.length; i++)
             Row(
@@ -123,11 +124,30 @@ class _MyGameScreenState extends State<MyGameScreen> {
     );
   }
 
-  void onLoginSuccess(String playerName) {
+  void onLoginSuccess(String playerName, int playerId) {
     setState(() {
       loggedInPlayer = playerName;
-      //loggedInPlayerId = playerName;
+      loggedInPlayerId = playerId;
     });
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Login'),
+          content: Text(
+            'You have succesfully logged in with the username: $playerName. And have id: $playerId',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void onRegisterSuccess(String playerName, int playerId) {
@@ -209,30 +229,35 @@ class _MyGameScreenState extends State<MyGameScreen> {
   }
 
   void _checkForMatch() {
-    if (selected[0] == selected[1]) {
+    Future.delayed(const Duration(seconds: 1), () {
       setState(() {
-        selected = [];
-      });
-    } else {
-      setState(() {
-        if (difficulty == Difficulty.normal) {
-          // For normal difficulty, only hide the selected cards
-          revealed[selected[0] ~/ board.length][selected[0] % board.length] =
-              false;
-          revealed[selected[1] ~/ board.length][selected[1] % board.length] =
-              false;
-        } else if (difficulty == Difficulty.hard) {
-          // For hard difficulty, hide all cards
-          revealed = List<List<bool>>.generate(
-            board.length,
-            (i) => List<bool>.filled(board[i].length, false),
-          );
-        }
+        if (selected[0] == selected[1]) {
+          selected = [];
+        } else {
+          if (difficulty == Difficulty.normal) {
+            for (int i = 0; i < revealed.length; i++) {
+              for (int j = 0; j < revealed[i].length; j++) {
+                if (board[i][j] == selected[0] || board[i][j] == selected[1]) {
+                  revealed[i][j] = false;
+                }
+              }
+            }
+          } else if (difficulty == Difficulty.hard) {
+            revealed = List<List<bool>>.generate(
+              board.length,
+              (i) => List<bool>.filled(board[i].length, false),
+            );
+          }
 
-        selected = [];
-        tries--;
+          selected = [];
+          tries--;
+
+          if (tries == 0 || _allRevealed()) {
+            _gameOver();
+          }
+        }
       });
-    }
+    });
 
     if (tries == 0 || _allRevealed()) {
       _gameOver();
@@ -255,17 +280,20 @@ class _MyGameScreenState extends State<MyGameScreen> {
     double boardScore =
         (((board.length.toDouble()) * (board.length.toDouble())) / 2.0);
     int boardScoreCasted = boardScore.toInt();
-
+    int finalScore = boardScoreCasted - tries;
     if (tries == 0) {
-      _showGameOverDialog(
-          'Game Over!', 'You lose! Your score: $boardScoreCasted.');
-    } else {
-      _showGameOverDialog(
-          'You win!', 'Congratulations! Your score: $boardScoreCasted.');
+      finalScore -= 5;
     }
 
-    final response = await apiService.saveHighScore(
-        loggedInPlayerId, boardScoreCasted + tries);
+    if (tries == 0) {
+      _showGameOverDialog('Game Over!', 'You lose! Your score: $finalScore.');
+    } else {
+      _showGameOverDialog(
+          'You win!', 'Congratulations! Your score: $finalScore.');
+    }
+
+    final response =
+        await apiService.saveHighScore(loggedInPlayerId, finalScore);
     print(response['highscore']);
   }
 
