@@ -1,10 +1,11 @@
-﻿using DungeonFlutterAPI.Data;
+﻿using DungeonFlutterAPI.DAOs.Interfaces;
+using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
 
-namespace DungeonFlutterAPI.DAOs
+namespace DungeonFlutterAPI.DAOs.Implementations
 {
-    public class PlayerDAO
+    public class PlayerDAO : IPlayerDAO
     {
         private readonly MyDbContext _dbContext;
 

@@ -1,4 +1,5 @@
-using DungeonFlutterAPI.DAOs;
+using DungeonFlutterAPI.DAOs.Implementations;
+using DungeonFlutterAPI.DAOs.Interfaces;
 using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Services.Implementations;
 using DungeonFlutterAPI.Services.Interfaces;
@@ -13,8 +14,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyDbContext>();
-builder.Services.AddScoped<PlayerDAO>();
-builder.Services.AddScoped<HighScoreDAO>();
+builder.Services.AddScoped<IPlayerDAO, PlayerDAO>();
+builder.Services.AddScoped<IHighScoreDAO, HighScoreDAO>();
 builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IWorldGenerator, MemoryWorldGenerator>();
 builder.Services.AddScoped<IGame, SimpleGame>();

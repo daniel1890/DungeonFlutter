@@ -26,3 +26,5 @@ class MyApp extends StatelessWidget {
 // 7. Refactor front-end so multiple games
 // 8. Refactor back-end so multiple games
 // DONE 9. Return player ID when log in
+// 10. Refactor DAOs so they implement an interface which gets injected in Program.cs
+// 11. Add authentication to user login using 

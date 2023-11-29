@@ -1,4 +1,5 @@
-﻿using DungeonFlutterAPI.DAOs;
+﻿using DungeonFlutterAPI.DAOs.Implementations;
+using DungeonFlutterAPI.DAOs.Interfaces;
 using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
@@ -9,9 +10,9 @@ namespace DungeonFlutterAPI.Services.Implementations
 {
     public class PlayerService : IPlayerService
     {
-        private readonly PlayerDAO _playerDAO;
+        private readonly IPlayerDAO _playerDAO;
 
-        public PlayerService(PlayerDAO playerDAO)
+        public PlayerService(IPlayerDAO playerDAO)
         {
             _playerDAO = playerDAO;
         }

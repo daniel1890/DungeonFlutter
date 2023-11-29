@@ -1,10 +1,11 @@
-﻿using DungeonFlutterAPI.Data;
+﻿using DungeonFlutterAPI.DAOs.Interfaces;
+using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
 
-namespace DungeonFlutterAPI.DAOs
+namespace DungeonFlutterAPI.DAOs.Implementations
 {
-    public class HighScoreDAO
+    public class HighScoreDAO : IHighScoreDAO
     {
         private readonly MyDbContext _dbContext;
 

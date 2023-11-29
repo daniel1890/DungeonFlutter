@@ -1,4 +1,5 @@
-﻿using DungeonFlutterAPI.DAOs;
+﻿using DungeonFlutterAPI.DAOs.Implementations;
+using DungeonFlutterAPI.DAOs.Interfaces;
 using DungeonFlutterAPI.Data;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
@@ -10,9 +11,9 @@ namespace DungeonFlutterAPI.Services.Implementations
     {
         private readonly IWorldGenerator _worldGenerator;
         private readonly IGame _game;
-        private readonly HighScoreDAO _highScoreDAO;
+        private readonly IHighScoreDAO _highScoreDAO;
 
-        public GameService(IWorldGenerator worldGenerator, IGame game, HighScoreDAO highScoreDAO)
+        public GameService(IWorldGenerator worldGenerator, IGame game, IHighScoreDAO highScoreDAO)
         {
             _worldGenerator = worldGenerator ?? throw new ArgumentNullException(nameof(worldGenerator));
             _game = game ?? throw new ArgumentNullException(nameof(game));

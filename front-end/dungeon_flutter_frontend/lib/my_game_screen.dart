@@ -19,6 +19,7 @@ class MyGameScreenState extends State<MyGameScreen> {
   List<List<bool>> revealed = [];
   List<int> selected = [];
   int tries = 3;
+  int level = 1;
   bool gameStarted = false;
   Difficulty difficulty = Difficulty.normal;
   String loggedInPlayer = '';
@@ -141,6 +142,8 @@ class MyGameScreenState extends State<MyGameScreen> {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                startGame();
+                level++;
               },
               child: const Text('OK'),
             ),
@@ -185,7 +188,11 @@ class MyGameScreenState extends State<MyGameScreen> {
 
   Future<void> startGame() async {
     try {
-      final response = await apiService.startGame(4, 4);
+      final response = level % 2 == 0
+          ? await apiService.startGame(
+              2 + ((level) * 2), 2 + ((level - 1) * 2))
+          : await apiService.startGame(
+              2 + ((level - 1) * 2), 2 + ((level) * 2));
       print(response['board']);
       var extractedBoard = List<List<int>>.from(
         (response['board'] as List<dynamic>).map(
@@ -317,6 +324,14 @@ class MyGameScreenState extends State<MyGameScreen> {
                 _resetGame();
               },
               child: const Text('Return to Main Menu'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                startGame();
+                level++;
+              },
+              child: const Text('Next Level'),
             ),
           ],
         );
