@@ -1,7 +1,7 @@
+using DungeonFlutterAPI.Game.Interfaces;
 using DungeonFlutterAPI.Models.Domain;
-using DungeonFlutterAPI.Services.Interfaces;
 
-namespace DungeonFlutterAPI.Services.Implementations
+namespace DungeonFlutterAPI.Game.Implementations
 {
     public class SimpleGame : IGame
     {

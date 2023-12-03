@@ -19,7 +19,8 @@ class MyGameScreenState extends State<MyGameScreen> {
   List<List<bool>> revealed = [];
   List<int> selected = [];
   int tries = 3;
-  int level = 1;
+  int level = 0;
+  int finalScore = 0;
   bool gameStarted = false;
   Difficulty difficulty = Difficulty.normal;
   String loggedInPlayer = '';
@@ -189,10 +190,8 @@ class MyGameScreenState extends State<MyGameScreen> {
   Future<void> startGame() async {
     try {
       final response = level % 2 == 0
-          ? await apiService.startGame(
-              2 + ((level) * 2), 2 + ((level - 1) * 2))
-          : await apiService.startGame(
-              2 + ((level - 1) * 2), 2 + ((level) * 2));
+          ? await apiService.startGame(2 + (level), 2 + level)
+          : await apiService.startGame(2 + (level), 3 + (level));
       print(response['board']);
       var extractedBoard = List<List<int>>.from(
         (response['board'] as List<dynamic>).map(
@@ -240,6 +239,7 @@ class MyGameScreenState extends State<MyGameScreen> {
       setState(() {
         if (selected[0] == selected[1]) {
           selected = [];
+          finalScore += 2;
         } else {
           if (difficulty == Difficulty.normal) {
             for (int i = 0; i < revealed.length; i++) {
@@ -284,10 +284,6 @@ class MyGameScreenState extends State<MyGameScreen> {
   }
 
   void _gameOver() async {
-    double boardScore =
-        (((board.length.toDouble()) * (board.length.toDouble())) / 2.0);
-    int boardScoreCasted = boardScore.toInt();
-    int finalScore = boardScoreCasted - tries;
     if (tries == 0) {
       finalScore -= 5;
     }

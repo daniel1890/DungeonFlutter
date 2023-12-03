@@ -22,7 +22,7 @@ class ApiService {
 
   Future<Map<String, dynamic>> saveHighScore(int playerId, int score) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/game/savehighscore/$playerId?$score'),
+      Uri.parse('$baseUrl/api/highscore/savehighscore/$playerId?$score'),
       headers: {'Content-Type': 'application/json'},
     );
 

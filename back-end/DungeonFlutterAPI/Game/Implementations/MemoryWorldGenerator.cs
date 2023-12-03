@@ -1,20 +1,20 @@
-﻿using DungeonFlutterAPI.Models.Domain;
-using DungeonFlutterAPI.Services.Interfaces;
+﻿using DungeonFlutterAPI.Game.Interfaces;
+using DungeonFlutterAPI.Models.Domain;
 
-namespace DungeonFlutterAPI.Services.Implementations
+namespace DungeonFlutterAPI.Game.Implementations
 {
     public class MemoryWorldGenerator : IWorldGenerator
     {
         public World GenerateWorld(int rows, int columns)
         {
-            if (rows % 2 != 0 || columns % 2 != 0)
+            if ((rows * columns) % 2 != 0)
             {
                 throw new ArgumentException("The number of rows and columns must be even for a concentration game.");
             }
 
             List<List<int>> board = new List<List<int>>();
 
-            List<int> numbers = Enumerable.Range(0, (rows * columns) / 2).ToList();
+            List<int> numbers = Enumerable.Range(0, rows * columns / 2).ToList();
 
             // Use Fisher-Yates shuffle for shuffling the numbers list
             Random random = new Random();

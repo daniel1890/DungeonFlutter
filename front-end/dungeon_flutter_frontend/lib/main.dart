@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
 // DONE 2. Add logout functionality
 // DONE 3. Add real shuffle functionality to back-end
 // DONE 4. Fix normal difficulty card turning
-// 5. Fix score calculation
-// 6. Add multiple levels adding 1 to n cards on x,y of cards 2d array
+// DONE 5. Fix score calculation
+// DONE 6. Add multiple levels adding 1 to n cards on x,y of cards 2d array
 // 7. Refactor front-end so multiple games
 // 8. Refactor back-end so multiple games
 // DONE 9. Return player ID when log in
-// 10. Refactor DAOs so they implement an interface which gets injected in Program.cs
-// 11. Add authentication to user login using 
+// DONE 10. Refactor DAOs so they implement an interface which gets injected in Program.cs
+// 11. Add authentication to user login using JWT token

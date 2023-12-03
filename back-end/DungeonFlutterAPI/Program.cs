@@ -1,6 +1,8 @@
 using DungeonFlutterAPI.DAOs.Implementations;
 using DungeonFlutterAPI.DAOs.Interfaces;
 using DungeonFlutterAPI.Data;
+using DungeonFlutterAPI.Game.Implementations;
+using DungeonFlutterAPI.Game.Interfaces;
 using DungeonFlutterAPI.Services.Implementations;
 using DungeonFlutterAPI.Services.Interfaces;
 
@@ -20,6 +22,7 @@ builder.Services.AddScoped<IGameService, GameService>();
 builder.Services.AddScoped<IWorldGenerator, MemoryWorldGenerator>();
 builder.Services.AddScoped<IGame, SimpleGame>();
 builder.Services.AddScoped<IPlayerService, PlayerService>();
+builder.Services.AddScoped<IHighScoreService, HighScoreService>();
 
 
 

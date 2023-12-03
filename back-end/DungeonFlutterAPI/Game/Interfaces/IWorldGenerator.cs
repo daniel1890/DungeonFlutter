@@ -1,6 +1,6 @@
 ﻿using DungeonFlutterAPI.Models.Domain;
 
-namespace DungeonFlutterAPI.Services.Interfaces
+namespace DungeonFlutterAPI.Game.Interfaces
 {
     public interface IWorldGenerator
     {
