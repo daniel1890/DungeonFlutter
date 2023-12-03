@@ -59,7 +59,6 @@ namespace DungeonFlutterAPI.Controllers
                 return Ok(new { playerName = player.PlayerName, Id = player.Id });
             }
 
-            // Return an error response for failed login
             return BadRequest("Invalid credentials");
         }
     }
