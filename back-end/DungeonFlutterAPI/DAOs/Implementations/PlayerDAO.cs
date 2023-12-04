@@ -33,5 +33,16 @@ namespace DungeonFlutterAPI.DAOs.Implementations
 
             return player;
         }
+
+        public Player? GetPlayerById(int playerId)
+        {
+            return _dbContext.Players.FirstOrDefault(p => p.Id == playerId);
+        }
+
+        public void DeletePlayer(Player player)
+        {
+            _dbContext.Players.Remove(player);
+            _dbContext.SaveChanges();
+        }
     }
 }

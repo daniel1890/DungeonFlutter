@@ -7,6 +7,5 @@ namespace DungeonFlutterAPI.Services.Interfaces
     {
         World StartGame(int rows, int columns);
 
-        World GetWorld();
     }
 }

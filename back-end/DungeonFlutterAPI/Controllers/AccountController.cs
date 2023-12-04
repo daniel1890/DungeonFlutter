@@ -2,6 +2,7 @@
 using DungeonFlutterAPI.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using DungeonFlutterAPI.Services.Interfaces;
+using DungeonFlutterAPI.Exceptions;
 
 namespace DungeonFlutterAPI.Controllers
 {
@@ -60,6 +61,26 @@ namespace DungeonFlutterAPI.Controllers
             }
 
             return BadRequest("Invalid credentials");
+        }
+
+        [HttpDelete("delete")]
+        public IActionResult DeleteAccount([FromBody] DeletePlayerDTO deletePlayerDTO)
+        {
+            try
+            {
+                _playerService.DeletePlayer(deletePlayerDTO.PlayerId);
+
+                return Ok("Player account deleted successfully.");
+            }
+            catch (PlayerNotFoundException)
+            {
+                return NotFound("Player not found.");
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine(ex.Message);
+                return StatusCode(500, "An error occurred while processing your request.");
+            }
         }
     }
 }

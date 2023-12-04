@@ -10,5 +10,9 @@ namespace DungeonFlutterAPI.DAOs.Interfaces
         public void RegisterPlayer(Player player);
 
         public Player? LoginPlayer(PlayerLoginDTO loginDTO);
+
+        public Player? GetPlayerById(int playerId);
+
+        public void DeletePlayer(Player player);
     }
 }

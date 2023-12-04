@@ -26,10 +26,5 @@ namespace DungeonFlutterAPI.Services.Implementations
             return _game.StartGame(rows, columns);
         }
 
-        public World GetWorld()
-        {
-            return _game.GetWorld();
-        }
-
     }
 }

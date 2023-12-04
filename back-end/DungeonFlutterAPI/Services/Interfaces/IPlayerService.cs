@@ -8,6 +8,6 @@ namespace DungeonFlutterAPI.Services.Interfaces
         bool IsPlayerNameTaken(string playerName);
         void RegisterPlayer(Player player);
         Player? LoginPlayer(PlayerLoginDTO loginDTO);
-
+        void DeletePlayer(int playerId);
     }
 }

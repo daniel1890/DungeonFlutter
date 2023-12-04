@@ -27,15 +27,5 @@ namespace DungeonFlutterAPI.Controllers
             return Ok(worldDTO);
         }
 
-        [HttpGet("world")]
-        public IActionResult GetWorld()
-        {
-            World world = _gameService.GetWorld();
-            var worldDTO = new WorldDTO();
-            worldDTO.board = world.board;
-
-            return Ok(worldDTO);
-        }
-
     }
 }

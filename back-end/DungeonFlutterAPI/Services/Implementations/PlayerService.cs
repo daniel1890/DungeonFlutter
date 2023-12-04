@@ -1,6 +1,7 @@
 ﻿using DungeonFlutterAPI.DAOs.Implementations;
 using DungeonFlutterAPI.DAOs.Interfaces;
 using DungeonFlutterAPI.Data;
+using DungeonFlutterAPI.Exceptions;
 using DungeonFlutterAPI.Models.Domain;
 using DungeonFlutterAPI.Models.DTO;
 using DungeonFlutterAPI.Services.Interfaces;
@@ -30,6 +31,18 @@ namespace DungeonFlutterAPI.Services.Implementations
         public bool IsPlayerNameTaken(string playerName)
         {
             return _playerDAO.IsPlayerNameTaken(playerName);
+        }
+
+        public void DeletePlayer(int playerId)
+        {
+            var player = _playerDAO.GetPlayerById(playerId);
+
+            if (player == null)
+            {
+                throw new PlayerNotFoundException(); // You should create this exception class
+            }
+
+            _playerDAO.DeletePlayer(player);
         }
     }
 }
