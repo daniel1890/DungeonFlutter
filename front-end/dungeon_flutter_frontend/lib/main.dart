@@ -28,3 +28,4 @@ class MyApp extends StatelessWidget {
 // DONE 9. Return player ID when log in
 // DONE 10. Refactor DAOs so they implement an interface which gets injected in Program.cs
 // 11. Add authentication to user login using JWT token
+// 12. Fix getHighScore endpoint

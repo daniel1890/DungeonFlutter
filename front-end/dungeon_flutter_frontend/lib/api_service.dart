@@ -22,7 +22,8 @@ class ApiService {
 
   Future<Map<String, dynamic>> saveHighScore(int playerId, int score) async {
     final response = await http.post(
-      Uri.parse('$baseUrl/api/highscore/savehighscore/$playerId?$score'),
+      Uri.parse(
+          '$baseUrl/api/highscore/savehighscore/$playerId?highscore=$score'),
       headers: {'Content-Type': 'application/json'},
     );
 
@@ -68,6 +69,23 @@ class ApiService {
       return jsonDecode(response.body);
     } else {
       throw Exception('Failed to login. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<Map<String, dynamic>> removeAccount(String playerID) async {
+    final response = await http.post(
+      Uri.parse('$baseUrl/api/account/delete'),
+      body: jsonEncode({
+        "playerId": playerID,
+      }),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
+    } else {
+      throw Exception(
+          'Failed to remove given account. Status code: ${response.statusCode}');
     }
   }
 }

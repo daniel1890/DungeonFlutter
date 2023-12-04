@@ -41,7 +41,7 @@ namespace DungeonFlutterAPI.Controllers
 
                 _playerService.RegisterPlayer(player);
 
-                return Ok(new { playerName = player.PlayerName, Id = player.Id });
+                return Ok(new { playerName = player.PlayerName, player.Id });
             }
             catch (Exception ex)
             {
@@ -57,7 +57,7 @@ namespace DungeonFlutterAPI.Controllers
 
             if (player != null)
             {
-                return Ok(new { playerName = player.PlayerName, Id = player.Id });
+                return Ok(new { playerName = player.PlayerName, player.Id });
             }
 
             return BadRequest("Invalid credentials");
@@ -79,7 +79,7 @@ namespace DungeonFlutterAPI.Controllers
             catch (Exception ex)
             {
                 Console.Error.WriteLine(ex.Message);
-                return StatusCode(500, "An error occurred while processing your request.");
+                return StatusCode(500, "An error occurred while trying to delete given account.");
             }
         }
     }

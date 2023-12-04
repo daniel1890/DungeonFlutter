@@ -46,7 +46,9 @@ class MyGameScreenState extends State<MyGameScreen> {
       children: <Widget>[
         ElevatedButton(
           onPressed: () async {
-            await startGame();
+            if (loggedInPlayer != '') {
+              await startGame();
+            }
           },
           child: const Text('Start Game'),
         ),
@@ -285,10 +287,6 @@ class MyGameScreenState extends State<MyGameScreen> {
 
   void _gameOver() async {
     if (tries == 0) {
-      finalScore -= 5;
-    }
-
-    if (tries == 0) {
       _showGameOverDialog('Game Over!', 'You lose! Your score: $finalScore.');
     } else {
       _showGameOverDialog(
@@ -298,6 +296,7 @@ class MyGameScreenState extends State<MyGameScreen> {
     final response =
         await apiService.saveHighScore(loggedInPlayerId, finalScore);
     print(response['highscore']);
+    print(finalScore);
   }
 
   void _showGameOverDialog(String title, String message) {
@@ -323,9 +322,11 @@ class MyGameScreenState extends State<MyGameScreen> {
             ),
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop();
-                startGame();
-                level++;
+                if (tries > 0) {
+                  Navigator.of(context).pop();
+                  startGame();
+                  level++;
+                }
               },
               child: const Text('Next Level'),
             ),
